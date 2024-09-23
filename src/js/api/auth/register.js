@@ -2,7 +2,6 @@ import { API_AUTH_REGISTER } from "../constants";
 import { headers } from "../headers";
 
 
-
 export async function register({ name, email, password }) {
   const body = {
     name,
@@ -10,9 +9,7 @@ export async function register({ name, email, password }) {
     password,
   };
 
-  try {
-    console.log("Trying to register");
-    
+  try {    
     const response = await fetch(API_AUTH_REGISTER, {
       method: "POST",
       headers: {
@@ -24,7 +21,7 @@ export async function register({ name, email, password }) {
 
     if (response.ok) {
       alert("User registered successfully!");
-      // window.location.href = "/auth/login/"; 
+      window.location.href = "/auth/login/"; 
     } else {
       const errorData = await response.json(); 
       alert(`Registration failed: ${errorData.message || "Unknown error"}`);
