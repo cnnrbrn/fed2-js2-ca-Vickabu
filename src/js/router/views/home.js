@@ -32,12 +32,17 @@ function displayPosts(posts) {
   });
 }
 
-function createPostElement(post, loggedInUserName) {
+export function createPostElement(post, loggedInUserName) {
     const postElement = document.createElement('div');
-    postElement.classList.add('post'); // Legger til en CSS-klasse for enklere seleksjon
+    postElement.classList.add('post'); 
 
     const heading = document.createElement('h2');
     heading.textContent = post.title;
+    heading.style.cursor = 'pointer'; 
+    heading.addEventListener('click', () => {
+        window.location.href = "/post/";  
+        localStorage.setItem("postId", JSON.stringify(post.id));  
+    });
 
     const content = document.createElement('p');
     content.textContent = post.body;
@@ -46,39 +51,37 @@ function createPostElement(post, loggedInUserName) {
     const postDate = new Date(post.created).toLocaleDateString();
 
     const metaInfoContainer = document.createElement('div');
+
     const authorSpan = document.createElement('span');
     authorSpan.textContent = `By ${authorName}`;
 
     const dateSpan = document.createElement('span');
     dateSpan.textContent = ` | ${postDate}`;
 
-    metaInfoContainer.appendChild(authorSpan);
-    metaInfoContainer.appendChild(dateSpan);
+    metaInfoContainer.append(authorSpan, dateSpan);
 
     if (post.author?.name === loggedInUserName) {
         const deleteButton = createDeleteButton(post.id);
         postElement.appendChild(deleteButton);
     }
 
-    postElement.appendChild(heading);
-    postElement.appendChild(content);
-    postElement.appendChild(metaInfoContainer);
+    postElement.append(heading, metaInfoContainer, content);
 
     if (post.media?.url) {
         const image = document.createElement('img');
         image.src = post.media.url;
         image.alt = post.media.alt || 'Post image';
+        image.className = "postImage";
         postElement.appendChild(image);
     }
 
     return postElement;
 }
 
-// Ny funksjon for å opprette slett-knappen
 function createDeleteButton(postId) {
     const deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.dataset.postId = postId; // Setter post ID som data-attributt
+    deleteButton.dataset.postId = postId; 
     deleteButton.addEventListener('click', onDeletePost);
     return deleteButton;
 }

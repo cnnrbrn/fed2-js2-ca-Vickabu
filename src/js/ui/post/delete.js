@@ -14,9 +14,16 @@ export async function onDeletePost(event) {
       const success = await deletePost(postId);
       if (success) {
         alert("Post deleted successfully.");
-        postElement.remove(); 
+        const currentPath = window.location.pathname;
+
+        if (currentPath.includes('post')) {
+          window.location.href = '/';
+          
+        } else {
+          postElement.remove();
+        }
       } else {
         alert("Failed to delete the post.");
       }
     }
-  }
+}

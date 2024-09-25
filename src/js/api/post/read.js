@@ -3,17 +3,19 @@ import { headers } from "../headers";
 
 export async function readPost(id) {
   try {
-    const response = await fetch(`${API_SOCIAL_POSTS}/${id}`, {
-      method: "GET",
-      headers: headers(),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Post:", data);
-      return data;
-    }
+      const response = await fetch(`${API_SOCIAL_POSTS}/${id}?_author=true`, { 
+          method: "GET",
+          headers: headers(),
+      });
+      if (response.ok) {
+          const data = await response.json();
+          console.log("Post:", data);
+          return data; // Returner hele dataobjektet
+      } else {
+          console.error("Failed to fetch post:", response.status);
+      }
   } catch (error) {
-    console.error("Error fetching post:", error);
+      console.error("Error fetching post:", error);
   }
 }
 
