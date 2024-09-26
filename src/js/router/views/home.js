@@ -2,10 +2,12 @@ import { onDeletePost } from "../../ui/post/delete";
 import { readPosts } from "../../api/post/read";
 import { setLogoutListener } from "../../ui/global/logout";
 import { authGuard } from "../../utilities/authGuard";
+import { getLoggedInUserName} from "../../utilities/loggedInUser";
+import { createDeleteButton, createEditButton } from "../../utilities/createButton";
 
-
-setLogoutListener();
 authGuard();
+setLogoutListener();
+
 
 function createPostsContainer() {
     const container = document.createElement('div'); 
@@ -15,24 +17,23 @@ function createPostsContainer() {
 }
 
 function displayPosts(posts) {
-  const container = document.getElementById('posts-list');
-  container.innerHTML = ''; 
+    const container = document.getElementById('posts-list');
+    container.innerHTML = ''; 
 
-  if (posts.length === 0) {
-    container.innerHTML = '<p>No posts found.</p>';
-    return;
-  }
+    if (posts.length === 0) {
+        container.innerHTML = '<p>No posts found.</p>';
+        return;
+    }
 
-  const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-  const loggedInUserName = userInfo?.name; 
+    const loggedInUserName = getLoggedInUserName(); 
 
-  posts.forEach(post => {
-    const postElement = createPostElement(post, loggedInUserName); 
-    container.appendChild(postElement); 
-  });
+    posts.forEach(post => {
+        const postElement = createPostElement(post, loggedInUserName); 
+        container.appendChild(postElement); 
+    });
 }
 
-export function createPostElement(post, loggedInUserName) {
+function createPostElement(post, loggedInUserName) {
     const postElement = document.createElement('div');
     postElement.classList.add('post'); 
 
@@ -61,8 +62,11 @@ export function createPostElement(post, loggedInUserName) {
     metaInfoContainer.append(authorSpan, dateSpan);
 
     if (post.author?.name === loggedInUserName) {
-        const deleteButton = createDeleteButton(post.id);
+        const deleteButton = createDeleteButton(post.id, onDeletePost); 
+        const editButton = createEditButton(post.id);
         postElement.appendChild(deleteButton);
+        postElement.appendChild(editButton);
+        
     }
 
     postElement.append(heading, metaInfoContainer, content);
@@ -78,13 +82,6 @@ export function createPostElement(post, loggedInUserName) {
     return postElement;
 }
 
-function createDeleteButton(postId) {
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.dataset.postId = postId; 
-    deleteButton.addEventListener('click', onDeletePost);
-    return deleteButton;
-}
 
 
 async function loadAndDisplayPosts() {

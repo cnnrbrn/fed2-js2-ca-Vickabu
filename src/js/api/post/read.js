@@ -10,7 +10,7 @@ export async function readPost(id) {
       if (response.ok) {
           const data = await response.json();
           console.log("Post:", data);
-          return data; // Returner hele dataobjektet
+          return data; 
       } else {
           console.error("Failed to fetch post:", response.status);
       }

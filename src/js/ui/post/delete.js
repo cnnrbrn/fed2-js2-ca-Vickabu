@@ -20,8 +20,13 @@ export async function onDeletePost(event) {
           window.location.href = '/';
           
         } else {
-          postElement.remove();
+          if (postElement) {
+            postElement.remove();
+          } else {
+            console.error("Post element not found.");
+          }
         }
+        
       } else {
         alert("Failed to delete the post.");
       }

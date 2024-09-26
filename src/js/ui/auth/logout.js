@@ -1,6 +1,6 @@
 export function onLogout() {
     console.log("Logging out");
-    localStorage.removeItem("accessToken");
+    ["accessToken", "userInfo"].forEach(item => localStorage.removeItem(item));
     alert("Logged out");
-    window.location.href = "/auth/login/";
+    window.location.href = "/";
 }

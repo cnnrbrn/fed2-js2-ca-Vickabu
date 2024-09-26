@@ -1,11 +1,14 @@
-
-// alert("Single Post Page");
-
 import { readPost } from "../../api/post/read";  
 import { onDeletePost } from "../../ui/post/delete";
+import { getLoggedInUserName } from "../../utilities/loggedInUser";
+import { createDeleteButton } from "../../utilities/createButton";
+import { setLogoutListener } from "../../ui/global/logout";
+import { authGuard } from "../../utilities/authGuard";
+
+authGuard();
+setLogoutListener();
 
 const postId = JSON.parse(localStorage.getItem("postId"));
-
 
 if (postId) {
     loadPost(postId);  
@@ -14,8 +17,7 @@ if (postId) {
     document.body.innerHTML = "<p>No post selected.</p>";
 }
 
-const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-const loggedInUserName = userInfo?.name; 
+const loggedInUserName = getLoggedInUserName(); 
 
 async function loadPost(postId) {
     try {
@@ -33,42 +35,35 @@ async function loadPost(postId) {
 
 function displayPost(post) {
     const postContainer = document.createElement('div');
-    postContainer.classList.add('single-post');
+    postContainer.classList.add('post');
 
-    const title = document.createElement('h1');
-    title.textContent = post.title;
+    const heading = document.createElement('h1');
+    heading.textContent = post.title;
 
     const content = document.createElement('p');
     content.textContent = post.body;
 
-   
     const authorName = post.author?.name || 'Unknown Author';
     const postDate = new Date(post.created).toLocaleDateString();
 
     const metaInfo = document.createElement('div');
     metaInfo.textContent = `By ${authorName} on ${postDate}`;
 
-    postContainer.append(title, metaInfo, content);
+    postContainer.append(heading, metaInfo, content);
 
     if (post.media?.url) {
         const image = document.createElement('img');
         image.src = post.media.url;
         image.alt = post.media.alt || 'Post image';
+        image.className = "postImage";
         postContainer.appendChild(image);
     }
 
     if (post.author?.name === loggedInUserName) {
-        const deleteButton = createDeleteButton(post.id);
+        const deleteButton = createDeleteButton(postId, onDeletePost); 
         postContainer.appendChild(deleteButton);
     }
-    
+
     document.body.appendChild(postContainer);
 }
 
-function createDeleteButton(postId) {
-    const deleteButton = document.createElement('button');
-    deleteButton.textContent = 'Delete';
-    deleteButton.dataset.postId = postId; 
-    deleteButton.addEventListener('click', onDeletePost);
-    return deleteButton;
-}

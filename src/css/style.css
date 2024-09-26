@@ -1,25 +1,71 @@
 @import url(_reset.css);
 
 body {
-    background-color: rgb(189, 192, 231);
+    background-color: #b4a5c7;
 }
 
-.postImage {
-    max-width: 100%;
+
+header {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #7e679c;
+    align-items: center;
 }
+
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo {
+    max-width: 140px;
+    width: 70%;
+}
+
+form {
+    display: block;
+    max-width: fit-content;
+    margin: auto;
+    justify-content: center;
+}
+
+label {
+    display: block;
+    margin: 4% 0 2%;
+  }
+
+input {
+    width: 100%;
+    margin-bottom: 2%;
+
+    display: inline-flex;
+}
+
 
 .post {
     text-align: center;
     max-width: 650px;
     margin: auto;
     box-shadow: 4px 4px 10px 5px  rgb(100 89 89 / 100%);
+    border-radius: 20px;
 }
 
-#post-list {
-    max-width: 1526px;
-    width: 95%;
+.post img {
+    max-width: 100%;
+}
+
+
+.login-register-frame {
     margin: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-    gap: 35px;
+    text-align: center;
+}
+
+.login-register-frame a {
+    text-decoration: underline;
+    font-size: 24px;
 }

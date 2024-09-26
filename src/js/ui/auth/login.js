@@ -1,17 +1,20 @@
-// export async function onLogin(event) {}
+
 import { login } from "../../api/auth/login";
 
-export async function onLogin(event) {
-  event.preventDefault(); 
 
-  const form = event.target;
-  const email = form.email.value.trim();
-  const password = form.password.value;
+export async function onLogin(event) {
+  event.preventDefault();
+
+  const { email, password } = Object.fromEntries(new FormData(event.target));
 
   try {
-    const result = await login({ email, password });
+    const result = await login({ email: email.trim(), password });
     console.log("Login successful!", result);
+    window.location.href = '/'; 
   } catch (error) {
-    console.error("Login failed:", error);
+    alert(`Login failed: ${error.message}`);
   }
 }
+
+
+
