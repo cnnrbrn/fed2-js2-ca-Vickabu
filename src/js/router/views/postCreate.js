@@ -5,6 +5,15 @@ import { setLogoutListener } from "../../ui/global/logout";
 authGuard();
 setLogoutListener();
 
-const form = document.forms.createPost;
+/**
+ * Sets up the event listener for the create post form submission.
+ *
+ * @returns {void}
+ *
+ * @example
+ * ```js
+ * document.forms.createPost.addEventListener("submit", onCreatePost);
+ * ```
+ */
 
-form.addEventListener("submit", onCreatePost);
+document.forms.createPost.addEventListener("submit", onCreatePost);

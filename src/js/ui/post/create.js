@@ -1,5 +1,19 @@
 import { createPost } from "../../api/post/create";
 
+/**
+ * Handles the submission of the create post form.
+ * Prevents the default form submission, gathers input values,
+ * and creates a new post by calling `createPost`.
+ *
+ * @param {Event} event - The submit event from the form.
+ * @returns {Promise<void>}
+ *
+ * @example
+ * ```js
+ * document.forms.createPost.addEventListener("submit", onCreatePost);
+ * ```
+ */
+
 export async function onCreatePost(event) {
   event.preventDefault(); 
 
@@ -13,7 +27,6 @@ export async function onCreatePost(event) {
 
   try {
       const newPost = await createPost({ title, body, tags, media });
-      console.log("New post created successfully:", newPost);
       event.target.reset(); 
       window.location.href = '/';
   } catch (error) {

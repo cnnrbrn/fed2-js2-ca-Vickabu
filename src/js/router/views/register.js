@@ -1,5 +1,14 @@
 import { onRegister } from "../../ui/auth/register";
 
-const form = document.forms.register;
+/**
+ * Sets up the event listener for the register form submission.
+ * 
+ * @returns {void}
+ *
+ * @example
+ * ```js
+ * document.forms.register.addEventListener("submit", onLogin);
+ * ```
+ */
 
-form.addEventListener("submit", onRegister);
+document.forms.register.addEventListener("submit", onRegister);

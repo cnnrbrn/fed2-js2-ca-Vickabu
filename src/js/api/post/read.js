@@ -1,6 +1,19 @@
 import { API_SOCIAL_POSTS, API_SOCIAL_PROFILES } from "../constants";
 import { headers } from "../headers";
 
+
+/**
+ * Fetches a single post by its ID.
+ *
+ * @param {string} id - The ID of the post to retrieve.
+ * @returns {Promise<Object|undefined>} A promise that resolves to the post data or undefined if the fetch fails.
+ *
+ * @example
+ * readPost("12345")
+ *   .then(post => console.log("Fetched post:", post))
+ *   .catch(error => console.error("Error:", error));
+ */
+
 export async function readPost(id) {
   try {
       const response = await fetch(`${API_SOCIAL_POSTS}/${id}?_author=true`, { 
@@ -9,7 +22,6 @@ export async function readPost(id) {
       });
       if (response.ok) {
           const data = await response.json();
-          console.log("Post:", data);
           return data; 
       } else {
           console.error("Failed to fetch post:", response.status);
@@ -18,6 +30,22 @@ export async function readPost(id) {
       console.error("Error fetching post:", error);
   }
 }
+
+
+/**
+ * Fetches a list of posts with optional pagination and tagging.
+ *
+ * @param {number} [limit=12] - The number of posts to retrieve (default is 12).
+ * @param {number} [page=1] - The page number to retrieve (default is 1).
+ * @param {string} [tag] - An optional tag to filter posts by.
+ * @returns {Promise<Array<Object>|undefined>} A promise that resolves to an array of post data or undefined if the fetch fails.
+ *
+ * @example
+ * readPosts(5, 2, "news")
+ *   .then(posts => console.log("Fetched posts:", posts))
+ *   .catch(error => console.error("Error:", error));
+ */
+
 
 export async function readPosts(limit = 12, page = 1, tag) {
   try {
@@ -33,9 +61,8 @@ export async function readPosts(limit = 12, page = 1, tag) {
       headers: headers(),
     });
     if (response.ok) {
-      const data = await response.json();
-      const posts = data.data;
-      console.log("responseData", posts);
+      const { data } = await response.json();
+      const posts = data;
       return posts;
     }
   } catch (error) {
@@ -43,109 +70,42 @@ export async function readPosts(limit = 12, page = 1, tag) {
   }
 }
 
+/**
+ * Fetches posts made by a specific user.
+ *
+ * @param {string} name - The username of the user whose posts to retrieve.
+ * @param {number} [limit=12] - The number of posts to retrieve (default is 12).
+ * @param {number} [page=1] - The page number to retrieve (default is 1).
+ * @param {string} [tag] - An optional tag to filter posts by.
+ * @returns {Promise<Array<Object>|undefined>} A promise that resolves to an array of posts made by the user, an empty array(no post found) or undefined if the fetch fails.
+ *
+ * @example
+ * readPostsByUser("johnDoe")
+ *   .then(posts => console.log("Fetched posts by user:", posts))
+ *   .catch(error => console.error("Error:", error));
+ */
+
 export async function readPostsByUser(name, limit = 12, page = 1, tag) {
   try {
-    const params = new URLSearchParams({
-      limit: limit.toString(),
-      page: page.toString(),
-      ...(tag && { tag: tag }), 
-    });
+      const params = new URLSearchParams({
+          limit: limit.toString(),
+          page: page.toString(),
+          ...(tag && { tag: tag }),
+      });
 
-    const response = await fetch(`${API_SOCIAL_PROFILES}/${name}/posts?${params}`, {
-      method: "GET",
-      headers: headers(),
-    });
-    if (response.ok) {
-      const data = await response.json();
-      const posts = data.data;
-      console.log(`Posts by user ${name}:`, posts);
-      return posts;
-    }
+      const response = await fetch(`${API_SOCIAL_PROFILES}/${name}/posts?${params}`, {
+          method: "GET",
+          headers: headers(),
+      });
+
+      if (response.ok) {
+          const { data } = await response.json();
+          const posts = data || []; 
+          return posts;
+      } else {
+          console.error(`Error fetching posts for user ${name}:`, response.status);
+      }
   } catch (error) {
-    console.error(`Error fetching posts by user ${name}:`, error);
+      console.error(`Error fetching posts by user ${name}:`, error);
   }
 }
-
-
-
-// export async function addComment(id, commentBody, replyToId = null) {
-//   const token = localStorage.getItem('accessToken'); 
-//   console.log("Token:", token); 
-//   try {
-//       const response = await fetch(`${API_SOCIAL_POSTS}/${id}/comment?_author=true`, {
-//           method: "POST",
-//           headers: {
-//               ...headers(),
-//               'Content-Type': 'application/json',
-//           },
-//           body: JSON.stringify({
-//               body: commentBody,
-//               replyToId: replyToId // Send replyToId som valgfritt
-//           }),
-//       });
-      
-//       if (response.ok) {
-//           const data = await response.json();
-//           console.log("Comment added:", data);
-//           return data; // Returner hele dataobjektet
-//       } else {
-//           console.error("Failed to add comment:", response.status, response.statusText);
-//           const errorData = await response.json();
-//           console.error("Error details:", errorData); // Logge feilmeldinger
-//       }
-//   } catch (error) {
-//       console.error("Error adding comment:", error);
-//   }
-// }
-
-  
-
-// export async function deleteComment(id, commentId) {
-//     try {
-//       const response = await fetch(`${API_SOCIAL_POSTS}/${id}/comment/${commentId}`, {
-//         method: "DELETE",
-//         headers: headers(),
-//       });
-//       if (response.ok) {
-//         console.log("Comment deleted");
-//         return true;
-//       }
-//     } catch (error) {
-//       console.error("Error deleting comment:", error);
-//     }
-//   }
-
-
-//   function isValidEmoji(symbol) {
-//     const emojiRegex = /\p{Extended_Pictographic}/u;
-//     return emojiRegex.test(symbol); // Returner true hvis symbolet er gyldig
-//   }
-
-//  export async function addReaction(id, symbol) {
-//   // Valider emoji-symbol
-//   if (!isValidEmoji(symbol)) {
-//     console.error("Invalid emoji symbol:", symbol);
-//     return; // Avbryt hvis symbolet ikke er gyldig
-//   }
-
-//   try {
-//     const response = await fetch(`${API_SOCIAL_POSTS}/${id}/react/${symbol}`, {
-//       method: "PUT",
-//       headers: headers(),
-//     });
-
-//     const responseBody = await response.json(); // Hent responsen for debugging
-
-//     if (!response.ok) {
-//       console.error("Failed to add reaction:", response.status, responseBody);
-//       return;
-//     }
-    
-//     console.log("Reaction added:", responseBody.data); // Logg den oppdaterte reaksjonen
-//     return responseBody.data; // Returner data
-//   } catch (error) {
-//     console.error("Error adding reaction:", error);
-//   }
-// }
-  
-

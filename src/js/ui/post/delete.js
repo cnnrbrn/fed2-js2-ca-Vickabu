@@ -1,5 +1,12 @@
 import { deletePost } from "../../api/post/delete";
 
+/**
+ * Handles the delete post action when the delete button is clicked.
+ *
+ * @param {Event} event - The click event from the delete button.
+ * @returns {Promise<void>}
+ */
+
 export async function onDeletePost(event) {
     const postId = event.target.dataset.postId; 
     const postElement = event.target.closest('.post'); 
@@ -7,28 +14,20 @@ export async function onDeletePost(event) {
     if (!postId) {
       console.error("Post ID not found.");
       return;
-    }
-  
-    const confirmed = confirm("Are you sure you want to delete this post?");
-    if (confirmed) {
-      const success = await deletePost(postId);
-      if (success) {
-        alert("Post deleted successfully.");
-        const currentPath = window.location.pathname;
+  }
 
-        if (currentPath.includes('post')) {
-          window.location.href = '/';
-          
-        } else {
-          if (postElement) {
-            postElement.remove();
+  if (confirm("Are you sure you want to delete this post?")) {
+      const success = await deletePost(postId);
+
+      if (success) {
+          alert("Post deleted successfully.");
+          if (window.location.pathname.includes('post')) {
+              window.location.href = '/'; 
           } else {
-            console.error("Post element not found.");
+              postElement?.remove(); 
           }
-        }
-        
       } else {
-        alert("Failed to delete the post.");
+          alert("Failed to delete the post.");
       }
-    }
+  }
 }
