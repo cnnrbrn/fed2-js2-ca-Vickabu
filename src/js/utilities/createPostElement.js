@@ -22,7 +22,7 @@ export function createPostElement(post, loggedInUserName, onDeletePost) {
     heading.textContent = post.title;
     heading.style.cursor = 'pointer';
     heading.addEventListener('click', () => {
-        window.location.href = "/post/";
+        window.location.href = `/post/?id=${post.id}`;
         localStorage.setItem("postId", JSON.stringify(post.id));
     });
 

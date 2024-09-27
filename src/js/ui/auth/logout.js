@@ -9,7 +9,6 @@
  */
 
 export function onLogout() {
-
     ["accessToken", "userInfo"].forEach(item => localStorage.removeItem(item));
     alert("Logged out");
     window.location.href = "/";

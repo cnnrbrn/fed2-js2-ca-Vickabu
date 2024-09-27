@@ -43,7 +43,7 @@ export function createEditButton(postId) {
     editButton.textContent = 'Edit';
     editButton.dataset.postId = postId; 
     editButton.addEventListener('click', () => {
-        window.location.href = `/post/edit/`;  
+        window.location.href = `/post/edit/?id=${postId}`;  
         localStorage.setItem("postId", JSON.stringify(postId));  
     });
     return editButton;
