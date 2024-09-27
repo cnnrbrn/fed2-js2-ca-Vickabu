@@ -8,9 +8,7 @@
  * console.log("Logged in user name:", userName);
  */
 
-
 export function getLoggedInUserName() {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    return userInfo?.name;
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  return userInfo?.name;
 }
-

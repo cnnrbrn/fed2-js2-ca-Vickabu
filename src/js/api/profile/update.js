@@ -1,8 +1,8 @@
 /**
  * Placeholder function for updating a user's profile with new avatar and/or banner images.
- * 
- * This function is currently not implemented and is intended to be used in the future for 
- * handling profile updates via the API. As of now, calling this function will not perform 
+ *
+ * This function is currently not implemented and is intended to be used in the future for
+ * handling profile updates via the API. As of now, calling this function will not perform
  * any actions or return any meaningful response.
  *
  * @param {string} username - The username of the profile to update.

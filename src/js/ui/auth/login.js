@@ -1,4 +1,3 @@
-
 import { login } from "../../api/auth/login";
 
 /**
@@ -19,11 +18,8 @@ export async function onLogin(event) {
 
   try {
     const result = await login({ email: email.trim(), password });
-    window.location.href = '/'; 
+    window.location.href = "/";
   } catch (error) {
     alert(`Login failed: ${error.message}`);
   }
 }
-
-
-

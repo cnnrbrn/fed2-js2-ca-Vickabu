@@ -1,7 +1,6 @@
 import { API_SOCIAL_POSTS, API_SOCIAL_PROFILES } from "../constants";
 import { headers } from "../headers";
 
-
 /**
  * Fetches a single post by its ID.
  *
@@ -16,21 +15,20 @@ import { headers } from "../headers";
 
 export async function readPost(id) {
   try {
-      const response = await fetch(`${API_SOCIAL_POSTS}/${id}?_author=true`, { 
-          method: "GET",
-          headers: headers(),
-      });
-      if (response.ok) {
-          const data = await response.json();
-          return data; 
-      } else {
-          console.error("Failed to fetch post:", response.status);
-      }
+    const response = await fetch(`${API_SOCIAL_POSTS}/${id}?_author=true`, {
+      method: "GET",
+      headers: headers(),
+    });
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error("Failed to fetch post:", response.status);
+    }
   } catch (error) {
-      console.error("Error fetching post:", error);
+    console.error("Error fetching post:", error);
   }
 }
-
 
 /**
  * Fetches a list of posts with optional pagination and tagging.
@@ -46,13 +44,12 @@ export async function readPost(id) {
  *   .catch(error => console.error("Error:", error));
  */
 
-
 export async function readPosts(limit = 12, page = 1, tag) {
   try {
     const params = new URLSearchParams({
       limit: limit.toString(),
       page: page.toString(),
-      ...(tag && { tag: tag }), 
+      ...(tag && { tag: tag }),
       _author: true,
     });
 
@@ -87,25 +84,28 @@ export async function readPosts(limit = 12, page = 1, tag) {
 
 export async function readPostsByUser(name, limit = 12, page = 1, tag) {
   try {
-      const params = new URLSearchParams({
-          limit: limit.toString(),
-          page: page.toString(),
-          ...(tag && { tag: tag }),
-      });
+    const params = new URLSearchParams({
+      limit: limit.toString(),
+      page: page.toString(),
+      ...(tag && { tag: tag }),
+    });
 
-      const response = await fetch(`${API_SOCIAL_PROFILES}/${name}/posts?${params}`, {
-          method: "GET",
-          headers: headers(),
-      });
-
-      if (response.ok) {
-          const { data } = await response.json();
-          const posts = data || []; 
-          return posts;
-      } else {
-          console.error(`Error fetching posts for user ${name}:`, response.status);
+    const response = await fetch(
+      `${API_SOCIAL_PROFILES}/${name}/posts?${params}`,
+      {
+        method: "GET",
+        headers: headers(),
       }
+    );
+
+    if (response.ok) {
+      const { data } = await response.json();
+      const posts = data || [];
+      return posts;
+    } else {
+      console.error(`Error fetching posts for user ${name}:`, response.status);
+    }
   } catch (error) {
-      console.error(`Error fetching posts by user ${name}:`, error);
+    console.error(`Error fetching posts by user ${name}:`, error);
   }
 }

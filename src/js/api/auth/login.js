@@ -26,9 +26,9 @@ export async function login({ email, password }) {
       method: "POST",
       headers: {
         ...headers(),
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }), 
+      body: JSON.stringify({ email, password }),
     });
 
     if (!response.ok) {
@@ -39,14 +39,14 @@ export async function login({ email, password }) {
     const { data } = await response.json();
     const { accessToken, name, bio, avatar, banner } = data;
 
- 
     localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("userInfo", JSON.stringify({ name, email, bio, avatar, banner }));
-    return data; 
-    
+    localStorage.setItem(
+      "userInfo",
+      JSON.stringify({ name, email, bio, avatar, banner })
+    );
+    return data;
   } catch (error) {
     console.error("Login failed:", error);
-    throw error; 
+    throw error;
   }
 }
-
