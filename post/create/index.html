@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noroff FED2 JS2 CA</title>
+    <script type="module" crossorigin src="/fed2-js2-ca-Vickabu/assets/auth-BTwsOMFA.js"></script>
+    <link rel="stylesheet" crossorigin href="/fed2-js2-ca-Vickabu/assets/auth-D6wQH6OE.css">
+  </head>
+  <body>
+    <header>
+      <img src="/fed2-js2-ca-Vickabu/assets/noroff-logo-cWZQt9D6.png" alt="Noroff Logo" class=logo />
+      <a href="/">Home</a>
+      <a href="/profile/">My Profile</a>
+      <a href="/auth/login/">Login</a>
+      <a href="/auth/register/">Register</a>
+      <button id="logoutButton">Logout</button>
+    </header>
+
+    <h1>Create Post</h1>
+      <form name="createPost">
+        <div>
+          <label for="title">Title</label>
+          <input type="text" name="title" placeholder="Post Title" required />
+        </div>
+
+        <div>
+          <label for="tags">Tag your post</label>
+          <input type="text" name="tags" placeholder="Tags (comma separated)" />
+        </div>
+        
+        <div>
+          <label for="body">Content</label>
+          <textarea name="body" placeholder="Post Content" required></textarea>
+        </div>
+
+        <div>
+          <label for="mediaUrl">Image link</label>
+          <input type="text" name="mediaUrl" placeholder="Media URL" />
+        </div>
+
+        <div>
+          <label for="mediaUrl">Alt for image</label>
+          <input type="text" name="mediaAlt" placeholder="Use few words" />
+        </div>
+        <button type="submit">Create Post</button>
+      </form>
+  </body>
+</html>

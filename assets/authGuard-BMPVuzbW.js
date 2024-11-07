@@ -1,0 +1,1 @@
+function t(){["accessToken","userInfo"].forEach(o=>localStorage.removeItem(o)),alert("Logged out"),window.location.href="/"}function e(){document.getElementById("logoutButton").addEventListener("click",()=>{t()})}function n(){localStorage.accessToken||(alert("You must be logged in to view this page"),window.location.href="/auth/")}export{n as a,e as s};
